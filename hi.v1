@@ -11,11 +11,11 @@ import org.jfree.data.general.DefaultPieDataset;
 class kursach extends JFrame implements ActionListener {
 
     int[] Array = new int[100];
-    int m=0;
+    int t=0;
     Label lb1;
     TextField txt1;
     Button btn1, btn2,btn3,btn4;
-    String a = "";
+    String j = "";
     String c = "";
     public kursach() {
         lb1 = new Label("Тут что-то написано");
