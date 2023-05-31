@@ -1,0 +1,130 @@
+import java.util.Arrays;
+import java.awt.*;
+import javax.swing.JFrame;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
+
+class kursach extends JFrame implements ActionListener {
+
+    int[] Array = new int[100];
+    int n=0;
+    Label lb1;
+    TextField txt1;
+    Button btn1, btn2,btn3,btn4;
+    String a = "";
+    String b = "";
+    public kursach() {
+        lb1 = new Label("Тут что-то написано");
+
+        txt1 = new TextField(10);
+        btn1 = new Button("Записать в память");
+        btn2 = new Button("Вывести число из памяти");
+        btn4 = new Button("Очистить память");
+        btn4.setBackground(Color.cyan);
+        btn1.setBackground(Color.orange);
+        btn2.setBackground(Color.gray);
+
+
+        btn3=new Button("Диаграмма");
+        btn3.setBackground(Color.red);
+        btn1.addActionListener(this);
+        btn2.addActionListener(this);
+        btn3.addActionListener(this);
+        btn4.addActionListener(this);
+
+
+        JFrame frameObj;
+        {
+            frameObj = new JFrame();
+            frameObj.add(lb1);
+            frameObj.add(txt1);
+            frameObj.add(btn1);
+            frameObj.add(btn2);
+            frameObj.add(btn3);
+            frameObj.add(btn4);
+
+            frameObj.setLayout(new GridLayout(4, 3));
+            frameObj.setLocation(800,400);
+            frameObj.setTitle("КУРСАЧ");
+
+
+            frameObj.setSize(600, 400);
+            frameObj.setVisible(true);
+            frameObj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        }
+    }
+
+    public void actionPerformed(ActionEvent ae) {
+
+        try {
+            a = String.valueOf(txt1.getText());
+
+
+        }
+        catch (NumberFormatException e) {
+            txt1.setText("Ошибка ввода");
+        }
+
+        if (ae.getSource() == btn1) {
+
+            char[] chars = txt1.getText().toCharArray();
+            StringBuilder sb = new StringBuilder();
+            for (char c : chars) {
+                if (!Character.isDigit(c)) {
+                    sb.append(c);
+
+                }
+            }
+            if (sb.length() > 0) {
+                txt1.setText("Найдена ошибка");
+                sb.setLength(0);
+            }
+            else {
+                Array[n]=Integer.parseInt(txt1.getText());
+
+                b =b+txt1.getText()+", ";
+
+                sb.setLength(0);
+                n++;
+            }
+        }
+
+
+        if (ae.getSource() == btn2) {
+            lb1.setText(b);
+        }
+
+        if (ae.getSource() == btn3) {
+
+            DefaultPieDataset pieDataset = new DefaultPieDataset();
+            for (int i=0;i<n;i++) {
+                pieDataset.setValue(Integer.toString(i),Array[i]);
+
+            }
+            JFreeChart chart = ChartFactory.createPieChart("Диаграмма с числами введенными в память", pieDataset, true, true, true);
+
+            ChartFrame frame = new ChartFrame("Диаграмма", chart);
+            frame.setVisible(true);
+            frame.setSize(600, 600);
+            frame.setLocation(100, 100);
+        }
+        if (ae.getSource() == btn4) {
+            lb1.setText("");
+            b = "";
+            txt1.setText("");
+             Arrays.fill(Array,0);
+             n=0;
+        }
+    }
+
+    public static void main(String[] args) {
+        kursach app = new kursach();
+
+        app.setTitle("КУРСАЧ");
+        app.setLocation(600, 400);
+    }
+}
